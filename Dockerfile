@@ -10,7 +10,7 @@ ARG SLURM_TAG=slurm-20-02-1-1
 ARG GOSU_VERSION=1.11
 
 RUN set -ex \
-    && yum makecache fast \
+    && yum makecache fast\
     && yum -y update \
     && yum -y install epel-release \
     && yum -y install \
@@ -34,10 +34,15 @@ RUN set -ex \
        psmisc \
        bash-completion \
        vim-enhanced \
+       json-c-devel \
+       http-parser-devel \
     && yum clean all \
     && rm -rf /var/cache/yum
 
 RUN pip install Cython nose && pip3.4 install Cython nose
+
+RUN ln -s /usr/bin/python3.4 /usr/bin/python3
+RUN chmod +x /usr/bin/python3
 
 RUN set -ex \
     && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64" \
@@ -55,6 +60,7 @@ RUN set -x \
     && git checkout tags/$SLURM_TAG \
     && ./configure --enable-debug --prefix=/usr --sysconfdir=/etc/slurm \
         --with-mysql_config=/usr/bin  --libdir=/usr/lib64 \
+    && make \
     && make install \
     && install -D -m644 etc/cgroup.conf.example /etc/slurm/cgroup.conf.example \
     && install -D -m644 etc/slurm.conf.example /etc/slurm/slurm.conf.example \
