@@ -74,16 +74,16 @@ services:
 
   slurmrestd:
     image: slurm-docker-cluster:20.02.1
-    command: ["slurmrestd", "-f", "/etc/slurm/slurm.conf", "-u", "slurm", "0.0.0.0:8080", "-vvvvvvvv"]
     hostname: slurmrestd
     container_name: slurmrestd
+    command: ["slurmrestd", "-f", "/etc/slurm/slurm.conf", "-vvvvvvvvvvv", "0.0.0.0:9091"]
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
       - slurm_jobdir:/data
       - var_log_slurm:/var/log/slurm
-    expose:
-      - "8080"
+    ports:
+      - "9091:9091"
     depends_on:
       - "slurmctld"
 
