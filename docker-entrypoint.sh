@@ -57,4 +57,15 @@ then
     exec /usr/sbin/slurmd -Dvvv
 fi
 
+if [ "$1" = "slurmrestd" ]
+then
+    echo "---> Starting the MUNGE Authentication service (munged) ..."
+    gosu munge /usr/sbin/munged
+
+    echo "---> Starting the Slurm Rest Daemon (slurmrestd) ..."
+
+    exec gosu slurm /usr/sbin/slurmrestd -f /etc/slurm/slurm.conf -vvvvvvvvvv 0.0.0.0:9091
+fi
+
+
 exec "$@"

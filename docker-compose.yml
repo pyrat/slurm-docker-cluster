@@ -76,7 +76,7 @@ services:
     image: slurm-docker-cluster:20.02.1
     hostname: slurmrestd
     container_name: slurmrestd
-    command: ["slurmrestd", "-f", "/etc/slurm/slurm.conf", "-vvvvvvvvvvv", "0.0.0.0:9091"]
+    command: ["slurmrestd"]
     volumes:
       - etc_munge:/etc/munge
       - etc_slurm:/etc/slurm
